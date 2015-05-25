@@ -1,0 +1,16 @@
+{
+  "SETweaks.Steam.DataBindings": {
+    "settings": {
+      "REST": true
+    },
+    "PublishedFileDetailList.json": "SETweaks/Steam/DataBindings/SteamStorage/PublishedFileDetailList.cs",
+    "PublishedFileDetails.json": "SETweaks/Steam/DataBindings/SteamStorage/PublishedFileDetails.cs"
+  },
+  "SETweaks.Mods.DataBindings": {
+    "settings": {
+      "REST": false,
+      "enableCapFixer": false
+    },
+    "SBC/Environment.yml": "SETweaks/Mods/DataBindings/Environment.cs"
+  }
+}

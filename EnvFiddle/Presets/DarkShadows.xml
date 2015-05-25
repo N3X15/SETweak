@@ -1,0 +1,16 @@
+﻿<?xml version="1.0"?>
+<Definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Environment>
+    <EnableFog>false</EnableFog>
+    <FogNear>100</FogNear>
+    <FogFar>200</FogFar>
+    <FogMultiplier>1</FogMultiplier>
+    <FogBacklightMultiplier>1</FogBacklightMultiplier>
+    <FogColor x="0" y="0" z="0" />
+    <SunIntensity>1</SunIntensity>
+    <BackLightDiffuse x="0" y="0" z="0" />
+    <BackLightIntensity>0</BackLightIntensity>
+    <AmbientMultiplier>1</AmbientMultiplier>
+    <EnvironmentAmbientIntensity>0.1</EnvironmentAmbientIntensity>
+  </Environment>
+</Definitions>

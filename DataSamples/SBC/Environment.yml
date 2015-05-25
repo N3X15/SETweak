@@ -1,0 +1,67 @@
+Environment:
+  properties:
+    Id:
+      type: Id
+    SunDirection:
+      type: Vector3f
+    EnvironmentOrientation:
+      type: EulerRot
+    EnableFog:
+      type: bool
+    FogNear:
+      type: float
+    FogFar:
+      type: float
+    FogMultiplier:
+      type: float
+    FogBacklightMultiplier:
+      type: float
+    FogDensity:
+      type: float
+    FogColor:
+      type: Vector3f
+    SunDiffuse:
+      type: Vector3f
+      default: 'new Vector3f(0.784313738f, 0.784313738f, 0.784313738f)'
+    SunIntensity:
+      type: float
+      default: '1.456f'
+    SunSpecular:
+      type: Vector3f
+      default: 'new Vector3f(0.784313738f, 0.784313738f, 0.784313738f)'
+    BackLightDiffuse:
+      type: Vector3f
+      default: 'new Vector3f(0.784313738f, 0.784313738f, 0.784313738f)'
+    BackLightIntensity:
+      type: float
+      default: '0.239f'
+    AmbientColor:
+      type: Vector3f
+      default: 'new Vector3f(0.141176477f, 0.141176477f, 0.141176477f)'
+    AmbientMultiplier:
+      type: float
+      default: '0.969f'
+    EnvironmentAmbientIntensity:
+      type: float
+      default: '0.5f'
+    BackgroundColor:
+      type: Vector3f
+      default: 'new Vector3f(1f, 1f, 1f)'
+    SunMaterial:
+      type: string
+      default: '"SunDisk"'
+    SunSizeMultiplier:
+      type: float
+      default: '200f'
+    SmallShipMaxSpeed:
+      type: float
+      default: '100f'
+    LargeShipMaxSpeed:
+      type: float
+      default: '100f'
+    SmallShipMaxAngularSpeed:
+      type: float
+      default: '36000f'
+    LargeShipMaxAngularSpeed:
+      type: float
+      default: '36000f'

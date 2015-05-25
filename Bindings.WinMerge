@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+   <paths>
+      <left>C:\Users\Rob\Documents\Projects\SETweaks\NEW_BINDINGS\SETweaks\</left>
+      <right>C:\Users\Rob\Documents\Projects\SETweaks\SETweaks.Common\</right>
+      <filter>Exclude Source Control</filter>
+      <subfolders>1</subfolders>
+      <left-readonly>0</left-readonly>
+      <right-readonly>0</right-readonly>
+   </paths>
+</project>

@@ -1,0 +1,4 @@
+*.bak
+bin
+obj
+/NEW_BINDINGS
