@@ -1,119 +1,103 @@
 using System;
-using System.Xml;
 using System.Xml.Serialization;
-using System.ComponentModel;
 
 namespace SETweaks.Mods.DataBindings
 {
     [Serializable]
-    public class Environment
+    public partial class Environment
     {
-        [Serializable, XmlRoot("Definitions")]
-        public class EnvironmentDefinitions
-        {
-            // "@xmlns:xsd": "http://www.w3.org/2001/XMLSchema"
-            // "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance"
-            // "Environment": {"Id": {"TypeId": "EnvironmentDefinition", "SubtypeId": "Default"}, "SunDirection": {"@x": "0.339467347", "@y": "0.709795356", "@z": "-0.617213368"}, "EnvironmentTexture": "Textures\\BackgroundCube\\Final\\BrightEarth", "EnvironmentOrientation": {"@Pitch": "-61.1861954", "@Roll": "90.9057846", "@Yaw": "60.3955574"}, "EnableFog": "false", "FogNear": "100", "FogFar": "200", "FogMultiplier": "1", "FogBacklightMultiplier": "1", "FogColor": {"@x": "0", "@y": "0", "@z": "0"}, "SunDiffuse": {"@x": "0.784313738", "@y": "0.784313738", "@z": "0.784313738"}, "SunIntensity": "1", "SunSpecular": {"@x": "0.784313738", "@y": "0.784313738", "@z": "0.784313738"}, "BackLightDiffuse": {"@x": "0", "@y": "0", "@z": "0"}, "BackLightIntensity": "0", "AmbientColor": {"@x": "0.0141176477", "@y": "0.0141176477", "@z": "0.0141176477"}, "AmbientMultiplier": "1", "EnvironmentAmbientIntensity": "0.1", "BackgroundColor": {"@x": "1", "@y": "1", "@z": "1"}, "SunMaterial": "SunDisk", "SunSizeMultiplier": "200"}
-            [XmlElement("Environment")]
-            public Environment Environment { get; set; }
-        }
-
-        public static Environment LoadFile(string filename)
-        {
-            var ser = new XmlSerializer(typeof(EnvironmentDefinitions));
-            using (XmlReader rdr = XmlReader.Create(filename))
-            {
-                return ((EnvironmentDefinitions)ser.Deserialize(rdr)).Environment;
-            }
-        }
-
-        public void SaveFile(string filename)
-        {
-            var ser = new XmlSerializer(typeof(EnvironmentDefinitions));
-            var settings = new XmlWriterSettings();
-            settings.Indent = true;
-            settings.IndentChars = "  ";
-            var def = new EnvironmentDefinitions();
-            def.Environment = this;
-            using (XmlWriter w = XmlWriter.Create(filename, settings))
-            {
-                ser.Serialize(w, def);
-            }
-        }
-        [XmlElement("FogMultiplier")]
-        public float FogMultiplier;
-
-        [XmlElement("FogNear")]
-        public float FogNear;
-
-        [XmlElement("SunSpecular", IsNullable = true)]
-        public Vector3f SunSpecular = new Vector3f(0.784313738f, 0.784313738f, 0.784313738f);
-
-        [XmlElement("EnvironmentOrientation")]
-        public EulerRot EnvironmentOrientation;
-
-        [XmlElement("LargeShipMaxSpeed", IsNullable = true)]
-        public Nullable<float> LargeShipMaxSpeed = 100f;
-
-        [XmlElement("SmallShipMaxAngularSpeed", IsNullable = true)]
-        public Nullable<float> SmallShipMaxAngularSpeed = 36000f;
-
-        [XmlElement("AmbientColor", IsNullable = true)]
-        public Vector3f AmbientColor = new Vector3f(0.141176477f, 0.141176477f, 0.141176477f);
-
-        [XmlElement("SmallShipMaxSpeed", IsNullable = true)]
-        public Nullable<float> SmallShipMaxSpeed = 100f;
-
-        [XmlElement("AmbientMultiplier", IsNullable = true)]
-        public Nullable<float> AmbientMultiplier = 0.969f;
-
-        [XmlElement("FogFar")]
-        public float FogFar;
-
-        [XmlElement("EnvironmentAmbientIntensity", IsNullable = true)]
-        public Nullable<float> EnvironmentAmbientIntensity = 0.5f;
-
-        [XmlElement("LargeShipMaxAngularSpeed", IsNullable = true)]
-        public Nullable<float> LargeShipMaxAngularSpeed = 36000f;
-
-        [XmlElement("SunDirection")]
-        public Vector3f SunDirection;
-
-        [XmlElement("SunDiffuse", IsNullable = true)]
-        public Vector3f SunDiffuse = new Vector3f(0.784313738f, 0.784313738f, 0.784313738f);
-
-        [XmlElement("EnableFog")]
-        public bool EnableFog;
-
-        [XmlElement("BackgroundColor", IsNullable = true)]
-        public Vector3f BackgroundColor = new Vector3f(1f, 1f, 1f);
-
-        [XmlElement("SunIntensity", IsNullable = true)]
-        public Nullable<float> SunIntensity = 1.456f;
-
-        [XmlElement("FogDensity")]
-        public float FogDensity;
-
-        [XmlElement("BackLightIntensity", IsNullable = true)]
-        public Nullable<float> BackLightIntensity = 0.239f;
-
-        [XmlElement("BackLightDiffuse", IsNullable = true)]
-        public Vector3f BackLightDiffuse = new Vector3f(0.784313738f, 0.784313738f, 0.784313738f);
-
-        [XmlElement("FogBacklightMultiplier")]
-        public float FogBacklightMultiplier;
-
-        [XmlElement("Id")]
+        [XmlElement("Id", Order = 0)]
         public Id Id;
 
-        [XmlElement("FogColor")]
-        public Vector3f FogColor;
+        [XmlElement("EnvironmentAmbientIntensity", IsNullable = true, Order = 1)]
+        public Nullable<float> EnvironmentAmbientIntensity = 0.5f;
 
-        [XmlElement("SunMaterial", IsNullable = true)]
+        [XmlElement("SunMaterial", IsNullable = true, Order = 2)]
         public string SunMaterial = "SunDisk";
 
-        [XmlElement("SunSizeMultiplier", IsNullable = true)]
+        [XmlElement("FogColor", Order = 3)]
+        public Vector3f FogColor;
+
+        [XmlElement("SunSizeMultiplier", IsNullable = true, Order = 4)]
         public Nullable<float> SunSizeMultiplier = 200f;
+
+        [XmlElement("FogBacklightMultiplier", Order = 5)]
+        public float FogBacklightMultiplier;
+
+        [XmlElement("BackLightDiffuse", IsNullable = true, Order = 6)]
+        public Vector3f BackLightDiffuse = new Vector3f(0.784313738f, 0.784313738f, 0.784313738f);
+
+        [XmlElement("BackLightIntensity", IsNullable = true, Order = 7)]
+        public Nullable<float> BackLightIntensity = 0.239f;
+
+        [XmlElement("FogDensity", Order = 8)]
+        public float FogDensity;
+
+        [XmlElement("SunIntensity", IsNullable = true, Order = 9)]
+        public Nullable<float> SunIntensity = 1.456f;
+
+        [XmlElement("BackgroundColor", IsNullable = true, Order = 10)]
+        public Vector3f BackgroundColor = new Vector3f(1f, 1f, 1f);
+
+        [XmlElement("EnableFog", Order = 11)]
+        public bool EnableFog;
+
+        [XmlElement("SunDiffuse", IsNullable = true, Order = 12)]
+        public Vector3f SunDiffuse = new Vector3f(0.784313738f, 0.784313738f, 0.784313738f);
+
+        [XmlElement("SunDirection", Order = 13)]
+        public Vector3f SunDirection;
+
+        [XmlElement("Enabled", IsNullable = true, Order = 14)]
+        public Nullable<bool> Enabled = true;
+
+        [XmlElement("LargeShipMaxAngularSpeed", IsNullable = true, Order = 15)]
+        public Nullable<float> LargeShipMaxAngularSpeed = 18000f;
+
+        [XmlElement("EnvironmentTexture", Order = 16)]
+        public string EnvironmentTexture;
+
+        [XmlElement("Icon", Order = 17)]
+        public string Icon;
+
+        [XmlElement("FogFar", Order = 18)]
+        public float FogFar;
+
+        [XmlElement("AmbientMultiplier", IsNullable = true, Order = 19)]
+        public Nullable<float> AmbientMultiplier = 0.969f;
+
+        [XmlElement("SmallShipMaxSpeed", IsNullable = true, Order = 20)]
+        public Nullable<float> SmallShipMaxSpeed = 100f;
+
+        [XmlElement("Description", Order = 21)]
+        public string Description;
+
+        [XmlElement("Public", IsNullable = true, Order = 22)]
+        public Nullable<bool> Public = true;
+
+        [XmlElement("AmbientColor", IsNullable = true, Order = 23)]
+        public Vector3f AmbientColor = new Vector3f(0.141176477f, 0.141176477f, 0.141176477f);
+
+        [XmlElement("SmallShipMaxAngularSpeed", IsNullable = true, Order = 24)]
+        public Nullable<float> SmallShipMaxAngularSpeed = 36000f;
+
+        [XmlElement("LargeShipMaxSpeed", IsNullable = true, Order = 25)]
+        public Nullable<float> LargeShipMaxSpeed = 100f;
+
+        [XmlElement("EnvironmentOrientation", Order = 26)]
+        public EulerRot EnvironmentOrientation;
+
+        [XmlElement("DisplayName", Order = 27)]
+        public string DisplayName;
+
+        [XmlElement("SunSpecular", IsNullable = true, Order = 28)]
+        public Vector3f SunSpecular = new Vector3f(0.784313738f, 0.784313738f, 0.784313738f);
+
+        [XmlElement("FogNear", Order = 29)]
+        public float FogNear;
+
+        [XmlElement("FogMultiplier", Order = 30)]
+        public float FogMultiplier;
 
     }
 }

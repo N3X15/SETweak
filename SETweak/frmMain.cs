@@ -34,5 +34,10 @@ namespace SETweak
             ctl.BackColor = validity ? Color.White : Color.Salmon;
         }
 
+        private void openToolStripButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }

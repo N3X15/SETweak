@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='ASCII'?>
+<Environment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <Id>
+      <TypeId>EnvironmentDefinition</TypeId>
+      <SubtypeId>Default</SubtypeId>
+    </Id>
+    <EnvironmentAmbientIntensity>0.5</EnvironmentAmbientIntensity>
+    <SunMaterial>SunDisk</SunMaterial>
+    <SunSizeMultiplier>200</SunSizeMultiplier>
+    <FogBacklightMultiplier>0</FogBacklightMultiplier>
+    <BackLightDiffuse x="0.78431373834609985" y="0.78431373834609985" z="0.78431373834609985"/>
+    <BackLightIntensity>0.239</BackLightIntensity>
+    <FogDensity>0</FogDensity>
+    <SunIntensity>1.456</SunIntensity>
+    <BackgroundColor x="1" y="1" z="1"/>
+    <EnableFog>false</EnableFog>
+    <SunDiffuse x="0.78431373834609985" y="0.78431373834609985" z="0.78431373834609985"/>
+    <Enabled>true</Enabled>
+    <FogFar>0</FogFar>
+    <AmbientMultiplier>0.969</AmbientMultiplier>
+    <Public>true</Public>
+    <AmbientColor x="0.14117647707462311" y="0.14117647707462311" z="0.14117647707462311"/>
+    <EnvironmentOrientation Yaw="60.3955536" Pitch="-61.1861954" Roll="90.90578"/>
+    <SunSpecular x="0.78431373834609985" y="0.78431373834609985" z="0.78431373834609985"/>
+    <FogNear>0</FogNear>
+    <FogMultiplier>0</FogMultiplier>
+  </Environment>
+

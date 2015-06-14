@@ -1,9 +1,24 @@
 Environment:
+  partial: true
   properties:
     Id:
       type: Id
+    DisplayName:
+      type: string
+    Description:
+      type: string
+    Icon:
+      type: string
+    Public:
+      type: bool
+      default: 'true'
+    Enabled:
+      type: bool
+      default: 'true'
     SunDirection:
       type: Vector3f
+    EnvironmentTexture:
+      type: string
     EnvironmentOrientation:
       type: EulerRot
     EnableFog:
@@ -64,4 +79,4 @@ Environment:
       default: '36000f'
     LargeShipMaxAngularSpeed:
       type: float
-      default: '36000f'
+      default: '18000f'

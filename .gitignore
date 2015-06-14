@@ -2,3 +2,5 @@
 bin
 obj
 /NEW_BINDINGS
+*.user
+TestResults

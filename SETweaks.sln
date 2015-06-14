@@ -16,6 +16,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SETweak", "SETweak\SETweak.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnvFiddle", "EnvFiddle\EnvFiddle.csproj", "{4EA06509-8F33-4BC8-80C2-5A1D95049E99}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnvFiddle.GUI", "EnvFiddle.GUI\EnvFiddle.GUI.csproj", "{A9643EFD-2A7D-4690-BC5F-7E6DBDC0D3D2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4EA06509-8F33-4BC8-80C2-5A1D95049E99} = {4EA06509-8F33-4BC8-80C2-5A1D95049E99}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = SETweaks.vsmdi
@@ -69,6 +74,16 @@ Global
 		{4EA06509-8F33-4BC8-80C2-5A1D95049E99}.Release|Mixed Platforms.Build.0 = Release|x86
 		{4EA06509-8F33-4BC8-80C2-5A1D95049E99}.Release|x86.ActiveCfg = Release|x86
 		{4EA06509-8F33-4BC8-80C2-5A1D95049E99}.Release|x86.Build.0 = Release|x86
+		{A9643EFD-2A7D-4690-BC5F-7E6DBDC0D3D2}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{A9643EFD-2A7D-4690-BC5F-7E6DBDC0D3D2}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{A9643EFD-2A7D-4690-BC5F-7E6DBDC0D3D2}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{A9643EFD-2A7D-4690-BC5F-7E6DBDC0D3D2}.Debug|x86.ActiveCfg = Debug|x86
+		{A9643EFD-2A7D-4690-BC5F-7E6DBDC0D3D2}.Debug|x86.Build.0 = Debug|x86
+		{A9643EFD-2A7D-4690-BC5F-7E6DBDC0D3D2}.Release|Any CPU.ActiveCfg = Release|x86
+		{A9643EFD-2A7D-4690-BC5F-7E6DBDC0D3D2}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{A9643EFD-2A7D-4690-BC5F-7E6DBDC0D3D2}.Release|Mixed Platforms.Build.0 = Release|x86
+		{A9643EFD-2A7D-4690-BC5F-7E6DBDC0D3D2}.Release|x86.ActiveCfg = Release|x86
+		{A9643EFD-2A7D-4690-BC5F-7E6DBDC0D3D2}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

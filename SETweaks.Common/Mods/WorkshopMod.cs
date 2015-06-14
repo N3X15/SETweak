@@ -6,6 +6,7 @@ using Ionic.Zip;
 using SETweaks.Steam;
 using SETweaks.Steam.DataBindings;
 using System.Net;
+using System.Threading;
 
 namespace SETweaks.Mods
 {
@@ -57,7 +58,6 @@ namespace SETweaks.Mods
                 Directory.Delete(workDir, true);
             Directory.CreateDirectory(workDir);
             zip.ExtractAll(workDir, ExtractExistingFileAction.OverwriteSilently);
-
             return new DirectoryMod(workDir);
         }
 
@@ -95,7 +95,7 @@ namespace SETweaks.Mods
             zip.Dispose();
         }
 
-        public void Download()
+        public void Download(bool clobber=false)
         {
             if (File.Exists(filename + ".tmp"))
                 File.Delete(filename + ".tmp");
@@ -104,7 +104,7 @@ namespace SETweaks.Mods
             FetchMetadata();
             if (File.Exists(filename))
             {
-                if ((new FileInfo(filename)).Length == MetaData.FileSize)
+                if ((new FileInfo(filename)).Length == MetaData.FileSize || clobber)
                 {
                     Console.WriteLine("  File exists, and is the correct size.  Skipping download.");
                     return;
@@ -116,6 +116,8 @@ namespace SETweaks.Mods
             using (WebClient wc = new WebClient())
                 wc.DownloadFile(MetaData.FileURL, filename + ".tmp");
             File.Move(filename + ".tmp", filename);
+            zip.Dispose();
+            zip = new ZipFile(filename);
         }
 
 

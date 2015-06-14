@@ -40,9 +40,8 @@
             this.mnuExit = new System.Windows.Forms.ToolStripMenuItem();
             this.tabs = new System.Windows.Forms.TabControl();
             this.tabGeneral = new System.Windows.Forms.TabPage();
-            this.tabEnvironment = new System.Windows.Forms.TabPage();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.pgModProperties = new System.Windows.Forms.PropertyGrid();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.newToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -52,6 +51,7 @@
             this.mnuDarkShadows = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuPitchBlack = new System.Windows.Forms.ToolStripMenuItem();
             this.cmbMaxSpeed = new System.Windows.Forms.ToolStripComboBox();
+            this.tabEnvironment = new System.Windows.Forms.TabPage();
             this.statusBar.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.tabs.SuspendLayout();
@@ -149,15 +149,13 @@
             this.tabGeneral.Text = "General";
             this.tabGeneral.UseVisualStyleBackColor = true;
             // 
-            // tabEnvironment
+            // pgModProperties
             // 
-            this.tabEnvironment.Location = new System.Drawing.Point(4, 22);
-            this.tabEnvironment.Name = "tabEnvironment";
-            this.tabEnvironment.Padding = new System.Windows.Forms.Padding(3);
-            this.tabEnvironment.Size = new System.Drawing.Size(603, 418);
-            this.tabEnvironment.TabIndex = 1;
-            this.tabEnvironment.Text = "tabPage2";
-            this.tabEnvironment.UseVisualStyleBackColor = true;
+            this.pgModProperties.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pgModProperties.Location = new System.Drawing.Point(3, 28);
+            this.pgModProperties.Name = "pgModProperties";
+            this.pgModProperties.Size = new System.Drawing.Size(597, 387);
+            this.pgModProperties.TabIndex = 2;
             // 
             // toolStrip1
             // 
@@ -172,14 +170,6 @@
             this.toolStrip1.Size = new System.Drawing.Size(597, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
-            // 
-            // pgModProperties
-            // 
-            this.pgModProperties.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pgModProperties.Location = new System.Drawing.Point(3, 28);
-            this.pgModProperties.Name = "pgModProperties";
-            this.pgModProperties.Size = new System.Drawing.Size(597, 387);
-            this.pgModProperties.TabIndex = 2;
             // 
             // newToolStripButton
             // 
@@ -198,6 +188,7 @@
             this.openToolStripButton.Name = "openToolStripButton";
             this.openToolStripButton.Size = new System.Drawing.Size(23, 22);
             this.openToolStripButton.Text = "&Open";
+            this.openToolStripButton.Click += new System.EventHandler(this.openToolStripButton_Click);
             // 
             // saveToolStripButton
             // 
@@ -253,6 +244,16 @@
             this.cmbMaxSpeed.Name = "cmbMaxSpeed";
             this.cmbMaxSpeed.Size = new System.Drawing.Size(121, 23);
             this.cmbMaxSpeed.Text = "Max Speed";
+            // 
+            // tabEnvironment
+            // 
+            this.tabEnvironment.Location = new System.Drawing.Point(4, 22);
+            this.tabEnvironment.Name = "tabEnvironment";
+            this.tabEnvironment.Padding = new System.Windows.Forms.Padding(3);
+            this.tabEnvironment.Size = new System.Drawing.Size(603, 418);
+            this.tabEnvironment.TabIndex = 1;
+            this.tabEnvironment.Text = "tabPage2";
+            this.tabEnvironment.UseVisualStyleBackColor = true;
             // 
             // frmMain
             // 

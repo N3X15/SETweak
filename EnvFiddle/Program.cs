@@ -15,15 +15,22 @@ namespace EnvFiddle
     class Program
     {
         static Environment DarkShadows;
+        const string wsPrefix = "http://steamcommunity.com/sharedfiles/filedetails/?id=";
 
         static IMod LocateMod(string path)
         {
             ulong modID;
+            if (path.StartsWith(wsPrefix))
+            {
+                path = path.Remove(wsPrefix.Length);
+            }
             if (ulong.TryParse(path, out modID))
             {
-                var wsmod = new WorkshopMod(modID);
-                wsmod.Download();
-                return wsmod.Extract();
+                using (var wsmod = new WorkshopMod(modID))
+                {
+                    wsmod.Download(false);
+                    return wsmod.Extract();
+                }
             }
             else
             {
@@ -59,21 +66,45 @@ namespace EnvFiddle
         {
             var opt = CliParser.Parse<Options>(args);
 
-            var preset = Path.Combine(BinDir(), "Presets", "DarkShadows.xml");
-            Console.WriteLine("Loading preset {0}...", preset);
-            using (var stream = File.OpenRead(preset))
+            if (opt.DarkShadows)
             {
-                DarkShadows = LoadEnv(stream);
+                var preset = Path.Combine(BinDir(), "Presets", "Special", "DarkShadows.xml");
+                Console.WriteLine("Pre-loading preset {0}...", preset);
+                using (var stream = File.OpenRead(preset))
+                {
+                    DarkShadows = LoadEnv(stream);
+                }
             }
 
             IMod mod = LocateMod(opt.Path);
 
             SETweaks.Mods.DataBindings.Environment env = LoadEnv(mod.ReadFile("Data/Environment.sbc"));
 
+            if (opt.Presets !=null && opt.Presets.Count > 0)
+            {
+                foreach (var presetName in opt.Presets)
+                {
+                    Console.WriteLine("Loading preset {0}...", presetName);
+                    Environment p_env;
+                    using (var stream = File.OpenRead(presetName))
+                    {
+                        p_env = LoadEnv(stream);
+                    }
+                    Console.WriteLine("Merging preset...");
+                    EnvMerge(env, DarkShadows);
+                }
+            }
+
             if (opt.DarkShadows)
             {
                 Console.WriteLine("Configuring for dark shadows...");
                 EnvMerge(env, DarkShadows);
+            }
+
+            if (opt.NoFog)
+            {
+                Console.WriteLine("Removing fog...");
+                env.EnableFog = false;
             }
 
             if (opt.MaxSpeedLargeShip != 100f)
@@ -94,6 +125,12 @@ namespace EnvFiddle
 
             Console.WriteLine("Saving mod to {0}...", Path.GetFullPath(opt.OutDir));
             (mod as DirectoryMod).CopyTo(opt.OutDir);
+
+            if (opt.WaitForInput)
+            {
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadKey();
+            }
         }
 
         private static void SaveEnv(Stream stream, Environment env)

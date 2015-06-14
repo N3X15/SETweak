@@ -4,6 +4,7 @@ import xmltodict
 import os
 import sys
 import subprocess
+import collections
 
 XSD = 'c:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v7.0A\\Bin\\x64\\xsd.exe'
 
@@ -12,6 +13,20 @@ CommonReplacements = {
     'url': 'URL',
     'hcontent': 'HContent'
 }
+
+
+_mapping_tag = yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG
+
+
+def dict_representer(dumper, data):
+  return dumper.represent_dict(data.iteritems())
+
+
+def dict_constructor(loader, node):
+  return collections.OrderedDict(loader.construct_pairs(node))
+
+yaml.add_representer(collections.OrderedDict, dict_representer)
+yaml.add_constructor(_mapping_tag, dict_constructor)
 
 
 def camelize(string):
@@ -48,6 +63,11 @@ class Class:
     self.properties = {}
     for name, data in config.get('properties', {}).items():
       self.properties[name] = PropertyDef(name, data)
+    self.namespaces = []
+
+  def using(self, namespace):
+    if namespace not in self.namespaces:
+      self.namespaces.append(namespace)
 
   def addProperty(self, prop):
     self.properties[prop.name] = prop
@@ -57,11 +77,17 @@ class Class:
     indentInner = '    ' * (indent + 1)
     o = ''
     if not REST:
+      self.using('System')
       o += indentOuter + '[Serializable]\n'
-    o += indentOuter + "public class {}\n".format(name)
+    o += indentOuter + 'public'
+    if self.config.get('partial', False):
+      o += ' partial'
+    o += ' class {}\n'.format(name)
     o += indentOuter + '{\n'
-    for prop in self.properties.values():
-      o += prop.toCS(REST, indent + 1)
+    idx = 0
+    for prop in reversed(self.properties.values()):
+      o += prop.toCS(self, REST, indent + 1, idx)
+      idx += 1
     o += indentOuter + '}\n'
     return o
 
@@ -86,18 +112,23 @@ class PropertyDef:
   def isAttribute(self):
     return self.realname.startswith('@')
 
-  def toCS(self, REST, indent):
+  def toCS(self, _class, REST, indent, index=None):
     indent = '    ' * indent
     o = ''
     t = self.type
     if REST:
+      _class.using('RestSharp.Serializers')
       o += indent + '[SerializeAs(Name="{}")]\n'.format(self.realname)
     else:
+      _class.using('System.Xml.Serialization')
       o += indent + '[Xml{}("{}"'.format('Attribute' if self.isAttribute() else 'Element', self.realname)
       if self.default is not None:
         o += ', IsNullable = true'
         if t in ('int', 'long', 'float', 'bool'):
+          _class.using('System')
           t = 'Nullable<{}>'.format(t)
+      if index is not None:
+        o += ', Order = {}'.format(index)
       o += ')]\n'
     o += indent + 'public {} {}'.format(t, self.name)
     if self.default is not None:
@@ -151,7 +182,7 @@ def readClass(name, members, settings):
   for k, v in members.items():
     ftype = findtype(v, k)
     if ftype is None:
-      allClasses += writeClass(k, v, settings)
+      allClasses += Class(k, v)
       ftype = k
     types[k] = ftype
 
@@ -205,13 +236,6 @@ for namespace, files in index.items():
     with open(csfilename, 'w') as outf:
       js = None
       with open(jsonfilename, 'r') as inf:
-        outf.write("using System;\n")
-        outf.write("using System.Collections.Generic;\n")
-        outf.write("using RestSharp.Serializers;\n")
-        outf.write("using System.Xml;\n")
-        outf.write('using System.ComponentModel;\n\n')
-        outf.write("namespace {}\n".format(namespace))
-        outf.write('{\n')
         if ext == ".json":
           js = json.load(inf)
         elif ext == ".xml":
@@ -222,12 +246,27 @@ for namespace, files in index.items():
         elif ext == ".yml":
           # for k, root in xmltodict.parse(inf, attr_prefix='').items():
           yml = yaml.load(inf)
+          using = []
+          classes = ''
           for name, clsData in yml.items():
-            cls = Class(name, clsData)
-            outf.write(cls.toCS(False, 1))
+            _class = Class(name, clsData)
+            classes += _class.toCS(False, 1)
+            using += _class.namespaces
+          for ns in sorted(using):
+            outf.write("using {};\n".format(ns))
+          outf.write("\nnamespace {}\n".format(namespace))
+          outf.write('{\n')
+          outf.write(classes)
           outf.write('}\n')
           continue
         else:
           print('UNKNOWN EXT: {}'.format(ext))
+      outf.write("using System;\n")
+      outf.write("using System.Collections.Generic;\n")
+      outf.write("using RestSharp.Serializers;\n")
+      outf.write("using System.Xml;\n")
+      outf.write('using System.ComponentModel;\n\n')
+      outf.write("namespace {}\n".format(namespace))
+      outf.write('{\n')
       writeClass(_id, js, settings, outf, 1)
       outf.write("}\n")
