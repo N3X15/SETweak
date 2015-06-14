@@ -1,4 +1,8 @@
 ﻿
+/**
+* Stolen from StackOverflow due to sheer laziness.
+*/
+
 using System;
 using System.Windows.Forms;
 namespace EnvFiddle.GUI
