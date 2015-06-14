@@ -30,8 +30,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using SETweaks.Steam;
-using SETweaks.Steam.DataBindings;
+using SETweak.Steam;
+using SETweak.Steam.DataBindings;
 using System.Text.RegularExpressions;
 
 namespace SETweak

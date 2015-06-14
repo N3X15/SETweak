@@ -25,7 +25,7 @@
 using System;
 using System.Xml.Serialization;
 
-namespace SETweaks.Mods.DataBindings
+namespace SETweak.Mods.DataBindings
 {
     [Serializable]
     public partial class Environment

@@ -30,7 +30,7 @@ using System.Text;
 using System.Xml.Serialization;
 using System.Xml;
 
-namespace SETweaks.Mods.DataBindings
+namespace SETweak.Mods.DataBindings
 {
     public partial class Environment
     {

@@ -28,7 +28,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 
-namespace SETweaks.Mods
+namespace SETweak.Mods
 {
     public class DirectoryMod : IMod, IDisposable
     {

@@ -33,7 +33,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
-using SETweaks;
+using SETweak;
 
 namespace EnvFiddle.GUI
 {
@@ -56,7 +56,18 @@ namespace EnvFiddle.GUI
             nudMaxSpeedLarge.Maximum = (decimal)SEConstants.SPEED_OF_LIGHT;
             nudMaxSpeedSmall.Maximum = (decimal)SEConstants.SPEED_OF_LIGHT;
 
+            UpdatePresetList();
+
             ValidateEverything();
+        }
+
+        private void UpdatePresetList()
+        {
+            clbLightingPresets.Items.Clear();
+            foreach (var file in Directory.GetFiles("Presets", "*.xml", SearchOption.AllDirectories))
+            {
+                clbLightingPresets.Items.Add(file, false);
+            }
         }
 
         private void SetValid(object o, Label lbl, bool isValid)
@@ -241,6 +252,54 @@ namespace EnvFiddle.GUI
         private void chkDarkShadows_CheckedChanged(object sender, EventArgs e)
         {
             opts.DarkShadows = chkDarkShadows.Checked;
+        }
+
+        private void cmdResetSpeedLarge_Click(object sender, EventArgs e)
+        {
+            nudMaxSpeedLarge.Value = (decimal)(new EnvFiddleOptions()).MaxSpeedLargeShip;
+            opts.MaxSpeedLargeShip = (float)nudMaxSpeedLarge.Value;
+            ValidateEverything();
+        }
+
+        private void cmdResetSpeedSmall_Click(object sender, EventArgs e)
+        {
+            nudMaxSpeedSmall.Value = (decimal)(new EnvFiddleOptions()).MaxSpeedSmallShip;
+            opts.MaxSpeedSmallShip = (float)nudMaxSpeedSmall.Value;
+            ValidateEverything();
+        }
+
+        private void cmdMaxSpeedLarge_Click(object sender, EventArgs e)
+        {
+            nudMaxSpeedLarge.Value = (decimal)SEConstants.SPEED_OF_LIGHT;
+            opts.MaxSpeedLargeShip = (float)nudMaxSpeedLarge.Value;
+            ValidateEverything();
+        }
+
+        private void cmdMaxSpeedSmall_Click(object sender, EventArgs e)
+        {
+            nudMaxSpeedSmall.Value = (decimal)SEConstants.SPEED_OF_LIGHT;
+            opts.MaxSpeedSmallShip = (float)nudMaxSpeedSmall.Value;
+            ValidateEverything();
+        }
+
+        private void clbLightingPresets_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            string subject = (string)clbLightingPresets.Items[e.Index];
+            switch (e.NewValue)
+            {
+                case CheckState.Checked:
+                    if (!opts.Presets.Contains(subject))
+                    {
+                        opts.Presets.Add(subject);
+                    }
+                    break;
+                case CheckState.Unchecked:
+                    if (opts.Presets.Contains(subject))
+                    {
+                        opts.Presets.Remove(subject);
+                    }
+                    break;
+            }
         }
     }
 }

@@ -27,9 +27,9 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SETweaks.Steam;
+using SETweak.Steam;
 
-namespace SETweaks.Tests
+namespace SETweak.Tests
 {
     [TestClass]
     public class SteamAPITests

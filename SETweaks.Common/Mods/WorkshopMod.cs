@@ -27,12 +27,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Ionic.Zip;
-using SETweaks.Steam;
-using SETweaks.Steam.DataBindings;
+using SETweak.Steam;
+using SETweak.Steam.DataBindings;
 using System.Net;
 using System.Threading;
 
-namespace SETweaks.Mods
+namespace SETweak.Mods
 {
     /// <summary>
     /// Work with mods from the workshop (*.sbm)

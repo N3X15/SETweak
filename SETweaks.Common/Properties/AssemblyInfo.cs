@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SETweaks")]
+[assembly: AssemblyTitle("SETweak")]
 [assembly: AssemblyDescription("Tweaking tools for Space Engineers.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SETweaks")]
+[assembly: AssemblyProduct("SETweak")]
 [assembly: AssemblyCopyright("Copyright ©  2015 Rob Nelson")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

@@ -27,10 +27,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using clipr;
-using SETweaks.Mods;
+using SETweak.Mods;
 using System.IO;
 using System.Xml.Serialization;
-using Environment = SETweaks.Mods.DataBindings.Environment;
+using Environment = SETweak.Mods.DataBindings.Environment;
 using System.Reflection;
 using System.Xml;
 
@@ -38,7 +38,6 @@ namespace EnvFiddle
 {
     class Program
     {
-        static Environment DarkShadows;
         const string wsPrefix = "http://steamcommunity.com/sharedfiles/filedetails/?id=";
 
         static IMod LocateMod(string path)
@@ -86,49 +85,45 @@ namespace EnvFiddle
             return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         }
 
+        static void MergePreset(Environment env, string presetName)
+        {
+            Console.WriteLine("Loading preset {0}...", presetName);
+            Environment p_env;
+            using (var stream = File.OpenRead(presetName))
+            {
+                p_env = LoadEnv(stream);
+            }
+            Console.WriteLine("Merging preset...");
+            EnvMerge(env, p_env);
+        }
+
         static void Main(string[] args)
         {
             var opt = CliParser.Parse<Options>(args);
 
-            if (opt.DarkShadows)
-            {
-                var preset = Path.Combine(BinDir(), "Presets", "Special", "DarkShadows.xml");
-                Console.WriteLine("Pre-loading preset {0}...", preset);
-                using (var stream = File.OpenRead(preset))
-                {
-                    DarkShadows = LoadEnv(stream);
-                }
-            }
-
             IMod mod = LocateMod(opt.Path);
 
-            SETweaks.Mods.DataBindings.Environment env = LoadEnv(mod.ReadFile("Data/Environment.sbc"));
+            SETweak.Mods.DataBindings.Environment env = LoadEnv(mod.ReadFile("Data/Environment.sbc"));
 
             if (opt.Presets !=null && opt.Presets.Count > 0)
             {
                 foreach (var presetName in opt.Presets)
                 {
-                    Console.WriteLine("Loading preset {0}...", presetName);
-                    Environment p_env;
-                    using (var stream = File.OpenRead(presetName))
-                    {
-                        p_env = LoadEnv(stream);
-                    }
-                    Console.WriteLine("Merging preset...");
-                    EnvMerge(env, DarkShadows);
+                    MergePreset(env, presetName);
                 }
             }
 
             if (opt.DarkShadows)
             {
                 Console.WriteLine("Configuring for dark shadows...");
-                EnvMerge(env, DarkShadows);
+                MergePreset(env,"Presets/Special/DarkShadows.xml");
             }
 
             if (opt.NoFog)
             {
                 Console.WriteLine("Removing fog...");
                 env.EnableFog = false;
+                env.FogDensity = 0;
             }
 
             if (opt.MaxSpeedLargeShip != 100f)
@@ -164,7 +159,7 @@ namespace EnvFiddle
             settings.IndentChars = "  ";
             using (var xmlw = XmlWriter.Create(stream, settings))
             {
-                var envdefs = new SETweaks.Mods.DataBindings.Environment.EnvironmentDefinitions();
+                var envdefs = new SETweak.Mods.DataBindings.Environment.EnvironmentDefinitions();
                 envdefs.Environment = env;
                 getEnvSerializer().Serialize(xmlw, envdefs);
             }
@@ -172,14 +167,14 @@ namespace EnvFiddle
 
         private static XmlSerializer getEnvSerializer()
         {
-            return new XmlSerializer(typeof(SETweaks.Mods.DataBindings.Environment.EnvironmentDefinitions));
+            return new XmlSerializer(typeof(SETweak.Mods.DataBindings.Environment.EnvironmentDefinitions));
         }
 
         private static Environment LoadEnv(Stream stream)
         {
             using (var envstream = stream)
             {
-                var envdefs = (SETweaks.Mods.DataBindings.Environment.EnvironmentDefinitions)getEnvSerializer().Deserialize(envstream);
+                var envdefs = (SETweak.Mods.DataBindings.Environment.EnvironmentDefinitions)getEnvSerializer().Deserialize(envstream);
                 return envdefs.Environment;
             }
         }

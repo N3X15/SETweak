@@ -26,10 +26,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using SETweaks.Steam.Services;
-using SETweaks.Steam.DataBindings;
+using SETweak.Steam.Services;
+using SETweak.Steam.DataBindings;
 
-namespace SETweaks.Steam
+namespace SETweak.Steam
 {
     public class WorkshopAPI
     {

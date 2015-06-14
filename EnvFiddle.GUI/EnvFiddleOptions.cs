@@ -31,22 +31,32 @@ namespace EnvFiddle.GUI
 {
     public class EnvFiddleOptions
     {
-        public string Path ="";
+        public string Path = "";
         public string OutDir = "";
         public bool DarkShadows = false;
         public float MaxSpeedSmallShip = 100f;
         public float MaxSpeedLargeShip = 100f;
+        public List<string> Presets = new List<string>();
 
         public override string ToString()
         {
             var sb = new List<string>();
+            foreach (var preset in Presets)
+            {
+                sb.Add("-p");
+                sb.Add(preset);
+            }
             if (DarkShadows)
+            {
                 sb.Add("-D");
-            if (MaxSpeedSmallShip!=100f) {
+            }
+            if (MaxSpeedSmallShip != 100f)
+            {
                 sb.Add("-s");
                 sb.Add(MaxSpeedSmallShip.ToString());
             }
-            if (MaxSpeedLargeShip != 100f){
+            if (MaxSpeedLargeShip != 100f)
+            {
                 sb.Add("-S");
                 sb.Add(MaxSpeedLargeShip.ToString());
             }

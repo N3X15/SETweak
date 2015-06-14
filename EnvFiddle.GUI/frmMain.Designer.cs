@@ -89,11 +89,11 @@ namespace EnvFiddle.GUI
             this.lblModName = new System.Windows.Forms.Label();
             this.lblOutputIntro = new System.Windows.Forms.Label();
             this.tabFinalCheck = new System.Windows.Forms.TabPage();
+            this.cmdExecute = new System.Windows.Forms.Button();
+            this.chkCYA2 = new System.Windows.Forms.CheckBox();
             this.chkCYA1 = new System.Windows.Forms.CheckBox();
             this.txtCommandLine = new System.Windows.Forms.TextBox();
             this.lblCommandLine = new System.Windows.Forms.Label();
-            this.chkCYA2 = new System.Windows.Forms.CheckBox();
-            this.cmdExecute = new System.Windows.Forms.Button();
             this.pnlBottom.SuspendLayout();
             this.tabs.SuspendLayout();
             this.tabSource.SuspendLayout();
@@ -169,7 +169,7 @@ namespace EnvFiddle.GUI
             this.tabSource.Location = new System.Drawing.Point(4, 22);
             this.tabSource.Name = "tabSource";
             this.tabSource.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSource.Size = new System.Drawing.Size(450, 183);
+            this.tabSource.Size = new System.Drawing.Size(450, 245);
             this.tabSource.TabIndex = 0;
             this.tabSource.Text = "Source";
             this.tabSource.UseVisualStyleBackColor = true;
@@ -226,7 +226,7 @@ namespace EnvFiddle.GUI
             this.tabSpeeds.Location = new System.Drawing.Point(4, 22);
             this.tabSpeeds.Name = "tabSpeeds";
             this.tabSpeeds.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSpeeds.Size = new System.Drawing.Size(450, 183);
+            this.tabSpeeds.Size = new System.Drawing.Size(450, 245);
             this.tabSpeeds.TabIndex = 1;
             this.tabSpeeds.Text = "Speeds";
             this.tabSpeeds.UseVisualStyleBackColor = true;
@@ -249,6 +249,7 @@ namespace EnvFiddle.GUI
             this.cmdMaxSpeedSmall.TabIndex = 7;
             this.cmdMaxSpeedSmall.Text = "C";
             this.cmdMaxSpeedSmall.UseVisualStyleBackColor = true;
+            this.cmdMaxSpeedSmall.Click += new System.EventHandler(this.cmdMaxSpeedSmall_Click);
             // 
             // cmdResetSpeedSmall
             // 
@@ -258,6 +259,7 @@ namespace EnvFiddle.GUI
             this.cmdResetSpeedSmall.TabIndex = 6;
             this.cmdResetSpeedSmall.Text = "Reset";
             this.cmdResetSpeedSmall.UseVisualStyleBackColor = true;
+            this.cmdResetSpeedSmall.Click += new System.EventHandler(this.cmdResetSpeedSmall_Click);
             // 
             // nudMaxSpeedSmall
             // 
@@ -285,6 +287,7 @@ namespace EnvFiddle.GUI
             this.cmdMaxSpeedLarge.TabIndex = 3;
             this.cmdMaxSpeedLarge.Text = "C";
             this.cmdMaxSpeedLarge.UseVisualStyleBackColor = true;
+            this.cmdMaxSpeedLarge.Click += new System.EventHandler(this.cmdMaxSpeedLarge_Click);
             // 
             // cmdResetSpeedLarge
             // 
@@ -294,6 +297,7 @@ namespace EnvFiddle.GUI
             this.cmdResetSpeedLarge.TabIndex = 2;
             this.cmdResetSpeedLarge.Text = "Reset";
             this.cmdResetSpeedLarge.UseVisualStyleBackColor = true;
+            this.cmdResetSpeedLarge.Click += new System.EventHandler(this.cmdResetSpeedLarge_Click);
             // 
             // nudMaxSpeedLarge
             // 
@@ -351,7 +355,7 @@ namespace EnvFiddle.GUI
             this.grpPresets.Controls.Add(this.clbLightingPresets);
             this.grpPresets.Location = new System.Drawing.Point(9, 54);
             this.grpPresets.Name = "grpPresets";
-            this.grpPresets.Size = new System.Drawing.Size(200, 123);
+            this.grpPresets.Size = new System.Drawing.Size(200, 185);
             this.grpPresets.TabIndex = 1;
             this.grpPresets.TabStop = false;
             this.grpPresets.Text = "Presets";
@@ -364,9 +368,10 @@ namespace EnvFiddle.GUI
             this.clbLightingPresets.FormattingEnabled = true;
             this.clbLightingPresets.Location = new System.Drawing.Point(3, 16);
             this.clbLightingPresets.Name = "clbLightingPresets";
-            this.clbLightingPresets.Size = new System.Drawing.Size(194, 104);
+            this.clbLightingPresets.Size = new System.Drawing.Size(194, 166);
             this.clbLightingPresets.Sorted = true;
             this.clbLightingPresets.TabIndex = 0;
+            this.clbLightingPresets.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.clbLightingPresets_ItemCheck);
             // 
             // lblLightingIntro
             // 
@@ -484,6 +489,27 @@ namespace EnvFiddle.GUI
             this.tabFinalCheck.Text = "Confirmation";
             this.tabFinalCheck.UseVisualStyleBackColor = true;
             // 
+            // cmdExecute
+            // 
+            this.cmdExecute.Location = new System.Drawing.Point(184, 222);
+            this.cmdExecute.Name = "cmdExecute";
+            this.cmdExecute.Size = new System.Drawing.Size(75, 23);
+            this.cmdExecute.TabIndex = 4;
+            this.cmdExecute.Text = "Go!";
+            this.cmdExecute.UseVisualStyleBackColor = true;
+            this.cmdExecute.Click += new System.EventHandler(this.cmdExecute_Click);
+            // 
+            // chkCYA2
+            // 
+            this.chkCYA2.Location = new System.Drawing.Point(81, 186);
+            this.chkCYA2.Name = "chkCYA2";
+            this.chkCYA2.Size = new System.Drawing.Size(310, 30);
+            this.chkCYA2.TabIndex = 3;
+            this.chkCYA2.Text = "I will not upload the result to the workshop, unless the original is my own work." +
+    "";
+            this.chkCYA2.UseVisualStyleBackColor = true;
+            this.chkCYA2.CheckedChanged += new System.EventHandler(this.chkCYA2_CheckedChanged);
+            // 
             // chkCYA1
             // 
             this.chkCYA1.Location = new System.Drawing.Point(81, 150);
@@ -512,27 +538,6 @@ namespace EnvFiddle.GUI
             this.lblCommandLine.TabIndex = 0;
             this.lblCommandLine.Text = "Here\'s what we will call EnvFiddle with.  Check that it\'s accurate, and save it t" +
     "o a batch file, if you want.";
-            // 
-            // chkCYA2
-            // 
-            this.chkCYA2.Location = new System.Drawing.Point(81, 186);
-            this.chkCYA2.Name = "chkCYA2";
-            this.chkCYA2.Size = new System.Drawing.Size(310, 30);
-            this.chkCYA2.TabIndex = 3;
-            this.chkCYA2.Text = "I will not upload the result to the workshop, unless the original is my own work." +
-    "";
-            this.chkCYA2.UseVisualStyleBackColor = true;
-            this.chkCYA2.CheckedChanged += new System.EventHandler(this.chkCYA2_CheckedChanged);
-            // 
-            // cmdExecute
-            // 
-            this.cmdExecute.Location = new System.Drawing.Point(184, 222);
-            this.cmdExecute.Name = "cmdExecute";
-            this.cmdExecute.Size = new System.Drawing.Size(75, 23);
-            this.cmdExecute.TabIndex = 4;
-            this.cmdExecute.Text = "Go!";
-            this.cmdExecute.UseVisualStyleBackColor = true;
-            this.cmdExecute.Click += new System.EventHandler(this.cmdExecute_Click);
             // 
             // frmMain
             // 

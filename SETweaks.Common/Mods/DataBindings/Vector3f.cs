@@ -28,7 +28,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace SETweaks.Mods.DataBindings
+namespace SETweak.Mods.DataBindings
 {
     [Serializable]
     public class Vector3f

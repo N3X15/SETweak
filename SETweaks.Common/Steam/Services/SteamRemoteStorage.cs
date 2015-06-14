@@ -25,7 +25,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SETweaks.Steam.Services
+namespace SETweak.Steam.Services
 {
     public class SteamRemoteStorage : SteamAPIService
     {

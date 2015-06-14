@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='ASCII'?>
-<Environment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<Definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Environment>
     <Id>
       <TypeId>EnvironmentDefinition</TypeId>
       <SubtypeId>Default</SubtypeId>
@@ -25,4 +26,4 @@
     <FogNear>0</FogNear>
     <FogMultiplier>0</FogMultiplier>
   </Environment>
-
+</Definitions>

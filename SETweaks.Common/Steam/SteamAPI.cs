@@ -31,7 +31,7 @@ using System.Net;
 using System.IO;
 using RestSharp;
 
-namespace SETweaks.Steam
+namespace SETweak.Steam
 {
     public abstract class SteamAPIService
     {
@@ -84,7 +84,7 @@ namespace SETweaks.Steam
             client.AddDefaultParameter("format", "xml");
             client.AddHandler("text/plain", new RestSharp.Deserializers.XmlDeserializer());
 
-            baseCacheDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SETweaks", "SteamAPICache");
+            baseCacheDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SETweak", "SteamAPICache");
             if (!Directory.Exists(baseCacheDir))
                 Directory.CreateDirectory(baseCacheDir);
 

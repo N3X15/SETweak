@@ -25,7 +25,7 @@
 using System.Collections.Generic;
 using RestSharp.Serializers;
 
-namespace SETweaks.Steam.DataBindings
+namespace SETweak.Steam.DataBindings
 {
     public class PublishedFileDetails
     {
