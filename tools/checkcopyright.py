@@ -90,7 +90,9 @@ class CopyrightChecker(object):
                         if line_s.startswith(self.begin_tag) and not hasReadHeader and not enteredBody:
                             inHeader = True
                             hasReadHeader = True
-                            firstline = line[3:]
+                            firstline = line[len(self.begin_tag):]
+                            if firstline.startswith(self.line_prefix):
+                                firstline = firstline[len(self.line_prefix):]
                             if firstline.strip() != '':
                                 headerBuf += firstline
                                 blurb = firstline
@@ -113,6 +115,8 @@ class CopyrightChecker(object):
                         else:
                             if blurb is None:
                                 blurb = line
+                                if blurb.startswith(self.line_prefix):
+                                    blurb = blurb[len(self.line_prefix):]
                                 continue
                             headerBuf += line + '\n'
 

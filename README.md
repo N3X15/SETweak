@@ -1,11 +1,12 @@
-SETweak
-=======
+# SETweak
 
 A toolchain for tweaking Space Engineers saves and mods.
 
+[![Build Status](http://ci.nexisonline.net/buildStatus/icon?job=SETweak)](http://ci.nexisonline.net/job/SETweak/)
+
 ## Builds
 
-Builds will be available soon via Jenkins CI.
+* [Latest successful build](http://ci.nexisonline.net/job/SETweak/lastSuccessfulBuild/artifact/SETweaks.zip) (Always against master)
 
 ## Compiling
 
