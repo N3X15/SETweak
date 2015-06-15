@@ -40,6 +40,8 @@ namespace EnvFiddle
     {
         const string wsPrefix = "http://steamcommunity.com/sharedfiles/filedetails/?id=";
 
+        static List<BaseFixer> Fixers = new List<BaseFixer>();
+
         static IMod LocateMod(string path)
         {
             ulong modID;
@@ -65,11 +67,13 @@ namespace EnvFiddle
         {
             object value = field.GetValue(b);
             object defaultValue = field.GetValue(defaults);
-            //Console.WriteLine("  {0} Default: {1}", field.Name, value);
+            Console.WriteLine("  {0}", field.Name);
+            Console.WriteLine("    default: {0}", defaultValue);
+            Console.WriteLine("    value: {0}", value);
             if (value == null || value.Equals(defaultValue))
                 return;
             field.SetValue(a, value);
-            Console.WriteLine("  Set {0} to {1}.", field.Name, value);
+            Console.WriteLine("    Set {0} to {1}.", field.Name, value);
         }
         static void EnvMerge(Environment a, Environment b)
         {
@@ -88,10 +92,11 @@ namespace EnvFiddle
         static void MergePreset(Environment env, string presetName)
         {
             Console.WriteLine("Loading preset {0}...", presetName);
+            presetName = Path.Combine(BinDir(), "Presets", presetName);
             Environment p_env;
             using (var stream = File.OpenRead(presetName))
             {
-                p_env = LoadEnv(stream);
+                p_env = LoadEnv(presetName, stream);
             }
             Console.WriteLine("Merging preset...");
             EnvMerge(env, p_env);
@@ -101,9 +106,16 @@ namespace EnvFiddle
         {
             var opt = CliParser.Parse<Options>(args);
 
+            foreach (var type in Assembly.GetCallingAssembly().GetTypes())
+            {
+                if(type.IsSubclassOf(typeof(BaseFixer))) {
+                    Fixers.Add((BaseFixer)Activator.CreateInstance(type));
+                }
+            }
+
             IMod mod = LocateMod(opt.Path);
 
-            SETweak.Mods.DataBindings.Environment env = LoadEnv(mod.ReadFile("Data/Environment.sbc"));
+            SETweak.Mods.DataBindings.Environment env = LoadEnv(string.Format("{0}:/Data/Environment.sbc",opt.Path),mod.ReadFile("Data/Environment.sbc"));
 
             if (opt.Presets !=null && opt.Presets.Count > 0)
             {
@@ -116,7 +128,7 @@ namespace EnvFiddle
             if (opt.DarkShadows)
             {
                 Console.WriteLine("Configuring for dark shadows...");
-                MergePreset(env,"Presets/Special/DarkShadows.xml");
+                MergePreset(env,"Special/DarkShadows.xml");
             }
 
             if (opt.NoFog)
@@ -135,6 +147,12 @@ namespace EnvFiddle
             {
                 Console.WriteLine("Setting maximum small ship speed to {0} m/s...", opt.MaxSpeedSmallShip);
                 env.SmallShipMaxSpeed = opt.MaxSpeedSmallShip;
+            }
+
+            Console.WriteLine("Checking for mistakes...");
+            foreach (var fix in Fixers)
+            {
+                fix.Fix(env);
             }
 
             using (var wstrm = mod.WriteFile("Data/Environment.sbc"))
@@ -170,8 +188,9 @@ namespace EnvFiddle
             return new XmlSerializer(typeof(SETweak.Mods.DataBindings.Environment.EnvironmentDefinitions));
         }
 
-        private static Environment LoadEnv(Stream stream)
+        private static Environment LoadEnv(string name, Stream stream)
         {
+            Console.WriteLine("Loading {0}...", name);
             using (var envstream = stream)
             {
                 var envdefs = (SETweak.Mods.DataBindings.Environment.EnvironmentDefinitions)getEnvSerializer().Deserialize(envstream);

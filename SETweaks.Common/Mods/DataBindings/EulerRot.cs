@@ -36,5 +36,21 @@ namespace SETweak.Mods.DataBindings
         public double Pitch { get; set; }
         [XmlAttribute]
         public double Roll { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("{{Yaw: {0}, Roll: {1}, Pitch: {2}}}", Yaw, Pitch, Roll);
+        }
+
+        public override bool Equals(object other)
+        {
+            if (other is EulerRot)
+            {
+                var otherV = (EulerRot)other;
+                return this.Yaw == otherV.Yaw && this.Pitch == otherV.Pitch && this.Roll == otherV.Roll;
+            }
+            else
+                return false;
+        }
     }
 }

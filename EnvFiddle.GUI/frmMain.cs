@@ -66,7 +66,7 @@ namespace EnvFiddle.GUI
             clbLightingPresets.Items.Clear();
             foreach (var file in Directory.GetFiles("Presets", "*.xml", SearchOption.AllDirectories))
             {
-                clbLightingPresets.Items.Add(file, false);
+                clbLightingPresets.Items.Add(file.Remove(0,8), false);
             }
         }
 

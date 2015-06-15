@@ -40,5 +40,21 @@ namespace SETweak.Mods.DataBindings
         [XmlElement("SubtypeId")]
         public string SubtypeId { get; set; }
 
+
+        public override string ToString()
+        {
+            return string.Format("{0}/{1}", TypeId, SubtypeId);
+        }
+
+        public override bool Equals(object other)
+        {
+            if (other is Id)
+            {
+                var otherV = (Id)other;
+                return this.TypeId == otherV.TypeId && this.SubtypeId == otherV.SubtypeId;
+            }
+            else
+                return false;
+        }
     }
 }
