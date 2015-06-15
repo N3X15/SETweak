@@ -49,7 +49,7 @@
     <Compile Include="SteamAPITests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SETweaks.Common\SETweaks.Common.csproj">
+    <ProjectReference Include="..\SETweaks.Common\SETweak.Common.csproj">
       <Project>{20AB5ACD-0A8D-41A3-9A45-9510145315A5}</Project>
       <Name>SETweaks.Common</Name>
     </ProjectReference>

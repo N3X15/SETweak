@@ -67,7 +67,7 @@ namespace EnvFiddle
         {
             object value = field.GetValue(b);
             object defaultValue = field.GetValue(defaults);
-            Console.WriteLine("  {0}", field.Name);
+            Console.WriteLine("  {0}:", field.Name);
             Console.WriteLine("    default: {0}", defaultValue);
             Console.WriteLine("    value: {0}", value);
             if (value == null || value.Equals(defaultValue))
