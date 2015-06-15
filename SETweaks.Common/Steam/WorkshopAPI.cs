@@ -28,11 +28,13 @@ using System.Linq;
 using System.Text;
 using SETweak.Steam.Services;
 using SETweak.Steam.DataBindings;
+using log4net;
 
 namespace SETweak.Steam
 {
     public class WorkshopAPI
     {
+        static readonly ILog log = LogManager.GetLogger(typeof(WorkshopAPI));
         public static PublishedFileDetails GetFileInfo(UInt64 fileID)
         {
             var req = new SteamRemoteStorage.GetPublishedFileDetails();

@@ -33,6 +33,8 @@ using System.Xml.Serialization;
 using Environment = SETweak.Mods.DataBindings.Environment;
 using System.Reflection;
 using System.Xml;
+using SETweak.Logging;
+using log4net;
 
 namespace EnvFiddle
 {
@@ -41,8 +43,9 @@ namespace EnvFiddle
         const string wsPrefix = "http://steamcommunity.com/sharedfiles/filedetails/?id=";
 
         static List<BaseFixer> Fixers = new List<BaseFixer>();
+        static ILog log = LogManager.GetLogger(typeof(Program));
 
-        static IMod LocateMod(string path)
+        static IMod LocateMod(string path, bool clobber)
         {
             ulong modID;
             if (path.StartsWith(wsPrefix))
@@ -53,7 +56,7 @@ namespace EnvFiddle
             {
                 using (var wsmod = new WorkshopMod(modID))
                 {
-                    wsmod.Download(false);
+                    wsmod.Download(clobber);
                     return wsmod.Extract();
                 }
             }
@@ -66,21 +69,26 @@ namespace EnvFiddle
         static void CopyIfNotNull(Environment a, Environment b, Environment defaults, FieldInfo field)
         {
             object value = field.GetValue(b);
+            object current = field.GetValue(a);
             object defaultValue = field.GetValue(defaults);
-            Console.WriteLine("  {0}:", field.Name);
-            Console.WriteLine("    default: {0}", defaultValue);
-            Console.WriteLine("    value: {0}", value);
-            if (value == null || value.Equals(defaultValue))
-                return;
-            field.SetValue(a, value);
-            Console.WriteLine("    Set {0} to {1}.", field.Name, value);
+            using (log.BeginDebug("{0}:", field.Name))
+            {
+                log.DebugFormat("default: {0}", defaultValue);
+                log.DebugFormat("a: {0}", current);
+                log.DebugFormat("b: {0}", value);
+                if (value == null || current.Equals(defaultValue))
+                    return;
+                field.SetValue(a, value);
+                log.InfoFormat("Set {0} to {1}.", field.Name, value);
+            }
         }
-        static void EnvMerge(Environment a, Environment b)
+
+        static void EnvMerge(Environment victim, Environment newvalues)
         {
             var defaults = new Environment();
             foreach (var finfo in typeof(Environment).GetFields())
             {
-                CopyIfNotNull(a, b, defaults, finfo);
+                CopyIfNotNull(victim, newvalues, defaults, finfo);
             }
         }
 
@@ -91,33 +99,40 @@ namespace EnvFiddle
 
         static void MergePreset(Environment env, string presetName)
         {
-            Console.WriteLine("Loading preset {0}...", presetName);
-            presetName = Path.Combine(BinDir(), "Presets", presetName);
-            Environment p_env;
-            using (var stream = File.OpenRead(presetName))
+            using (log.BeginInfo(string.Format("Merging preset {0}...", presetName)))
             {
-                p_env = LoadEnv(presetName, stream);
+                presetName = Path.Combine(BinDir(), "Presets", presetName);
+                Environment p_env;
+                using (var stream = File.OpenRead(presetName))
+                {
+                    p_env = LoadEnv(presetName, stream);
+                }
+                EnvMerge(env, p_env);
             }
-            Console.WriteLine("Merging preset...");
-            EnvMerge(env, p_env);
         }
 
         static void Main(string[] args)
         {
+            LogIndent.Configure();
             var opt = CliParser.Parse<Options>(args);
 
             foreach (var type in Assembly.GetCallingAssembly().GetTypes())
             {
-                if(type.IsSubclassOf(typeof(BaseFixer))) {
+                if (type.IsSubclassOf(typeof(BaseFixer)))
+                {
                     Fixers.Add((BaseFixer)Activator.CreateInstance(type));
                 }
             }
 
-            IMod mod = LocateMod(opt.Path);
+            IMod mod = LocateMod(opt.Path, opt.Clobber);
 
-            SETweak.Mods.DataBindings.Environment env = LoadEnv(string.Format("{0}:/Data/Environment.sbc",opt.Path),mod.ReadFile("Data/Environment.sbc"));
+            SETweak.Mods.DataBindings.Environment env = LoadEnv(string.Format("{0}:/Data/Environment.sbc", mod.ToString()), mod.ReadFile("Data/Environment.sbc"));
+            if (env == null)
+            {
+                throw new NullReferenceException("Env is null.  Did something go wrong during load?");
+            }
 
-            if (opt.Presets !=null && opt.Presets.Count > 0)
+            if (opt.Presets != null && opt.Presets.Count > 0)
             {
                 foreach (var presetName in opt.Presets)
                 {
@@ -127,41 +142,45 @@ namespace EnvFiddle
 
             if (opt.DarkShadows)
             {
-                Console.WriteLine("Configuring for dark shadows...");
-                MergePreset(env,"Special/DarkShadows.xml");
+                MergePreset(env, "Special/DarkShadows.xml");
             }
 
             if (opt.NoFog)
             {
-                Console.WriteLine("Removing fog...");
+                log.Info("Removing fog...");
                 env.EnableFog = false;
                 env.FogDensity = 0;
             }
 
             if (opt.MaxSpeedLargeShip != 100f)
             {
-                Console.WriteLine("Setting maximum large ship speed to {0} m/s...", opt.MaxSpeedLargeShip);
+                log.InfoFormat("Setting maximum large ship speed to {0} m/s...", opt.MaxSpeedLargeShip);
                 env.LargeShipMaxSpeed = opt.MaxSpeedLargeShip;
             }
             if (opt.MaxSpeedSmallShip != 100f)
             {
-                Console.WriteLine("Setting maximum small ship speed to {0} m/s...", opt.MaxSpeedSmallShip);
+                log.InfoFormat("Setting maximum small ship speed to {0} m/s...", opt.MaxSpeedSmallShip);
                 env.SmallShipMaxSpeed = opt.MaxSpeedSmallShip;
             }
 
-            Console.WriteLine("Checking for mistakes...");
-            foreach (var fix in Fixers)
+            using (log.BeginInfo("Checking for mistakes..."))
             {
-                fix.Fix(env);
+                foreach (var fix in Fixers)
+                {
+                    fix.Fix(env);
+                }
             }
 
-            using (var wstrm = mod.WriteFile("Data/Environment.sbc"))
+            using (log.BeginInfo(string.Format("Saving mod to {0}...", Path.GetFullPath(opt.OutDir))))
             {
-                SaveEnv(wstrm, env);
-            }
+                (mod as DirectoryMod).CopyTo(opt.OutDir);
 
-            Console.WriteLine("Saving mod to {0}...", Path.GetFullPath(opt.OutDir));
-            (mod as DirectoryMod).CopyTo(opt.OutDir);
+                DirectoryMod newmod = new DirectoryMod(opt.OutDir);
+                using (var wstrm = newmod.WriteFile("Data/Environment.sbc"))
+                {
+                    SaveEnv(wstrm, env);
+                }
+            }
 
             if (opt.WaitForInput)
             {
@@ -190,7 +209,7 @@ namespace EnvFiddle
 
         private static Environment LoadEnv(string name, Stream stream)
         {
-            Console.WriteLine("Loading {0}...", name);
+            log.InfoFormat("Loading {0}...", name);
             using (var envstream = stream)
             {
                 var envdefs = (SETweak.Mods.DataBindings.Environment.EnvironmentDefinitions)getEnvSerializer().Deserialize(envstream);

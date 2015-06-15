@@ -63,8 +63,11 @@ namespace EnvFiddle
         [NamedArgument("wait-for-input", Action = ParseAction.StoreTrue)]
         public bool WaitForInput { get; set; }
 
-        [NamedArgument('p',"preset", Action = ParseAction.Append)]
+        [NamedArgument('p', "preset", Action = ParseAction.Append)]
         public List<string> Presets { get; set; }
+
+        [NamedArgument('C', "clobber", Action = ParseAction.StoreTrue)]
+        public bool Clobber { get; set; }
 
     }
 }

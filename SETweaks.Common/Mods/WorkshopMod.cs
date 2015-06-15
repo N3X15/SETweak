@@ -31,6 +31,8 @@ using SETweak.Steam;
 using SETweak.Steam.DataBindings;
 using System.Net;
 using System.Threading;
+using log4net;
+using SETweak.Logging;
 
 namespace SETweak.Mods
 {
@@ -39,6 +41,7 @@ namespace SETweak.Mods
     /// </summary>
     public class WorkshopMod : IMod, IDisposable
     {
+        static readonly ILog log = LogManager.GetLogger(typeof(WorkshopMod));
         private PublishedFileDetails _metaData;
         public PublishedFileDetails MetaData
         {
@@ -124,22 +127,26 @@ namespace SETweak.Mods
             if (File.Exists(filename + ".tmp"))
                 File.Delete(filename + ".tmp");
 
-            Console.WriteLine("Fetching WS Mod #{0} metadata...", ID);
-            FetchMetadata();
+            using (log.BeginInfo("Fetching WS Mod #{0} metadata...", ID))
+            {
+                FetchMetadata();
+            }
             if (File.Exists(filename))
             {
                 if ((new FileInfo(filename)).Length == MetaData.FileSize || clobber)
                 {
-                    Console.WriteLine("  File exists, and is the correct size.  Skipping download.");
+                    log.Info("File exists, and is the correct size.  Skipping download.");
                     return;
                 }
-                Console.WriteLine("  File exists, but is the wrong size.  Deleting...");
+                log.Warn("File exists, but is the wrong size.  Deleting...");
                 File.Delete(filename);
             }
-            Console.WriteLine("Downloading WS Mod #{0} (\"{2}\") to {1}...", ID, filename, MetaData.Title);
-            using (WebClient wc = new WebClient())
-                wc.DownloadFile(MetaData.FileURL, filename + ".tmp");
-            File.Move(filename + ".tmp", filename);
+            using (log.BeginInfo("Downloading WS Mod #{0} (\"{2}\") to {1}...", ID, filename, MetaData.Title))
+            {
+                using (WebClient wc = new WebClient())
+                    wc.DownloadFile(MetaData.FileURL, filename + ".tmp");
+                File.Move(filename + ".tmp", filename);
+            }
             zip.Dispose();
             zip = new ZipFile(filename);
         }

@@ -30,6 +30,17 @@ using System.IO;
 
 namespace SETweak
 {
+    public static class StringExtensions
+    {
+        public static string Repeat(this char chatToRepeat, int repeat)
+        {
+            return new string(chatToRepeat, repeat);
+        }
+        public static string Repeat(this string stringToRepeat, int repeat)
+        {
+            return new StringBuilder().Insert(0, stringToRepeat, repeat).ToString();
+        }
+    }
     public class Utils
     {
         public static void CopyTree(string SourcePath, string DestinationPath)

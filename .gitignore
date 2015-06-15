@@ -4,3 +4,6 @@ obj
 /NEW_BINDINGS
 *.user
 TestResults
+/_UpgradeReport_Files
+/Backup
+/packages

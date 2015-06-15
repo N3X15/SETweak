@@ -30,12 +30,13 @@ using System.Xml;
 using System.Net;
 using System.IO;
 using RestSharp;
+using log4net;
 
 namespace SETweak.Steam
 {
     public abstract class SteamAPIService
     {
-
+        static readonly ILog log = LogManager.GetLogger(typeof(SteamAPIService));
         public abstract string ServiceID
         {
             get;
@@ -59,6 +60,7 @@ namespace SETweak.Steam
 
     public class SteamAPI
     {
+        static readonly ILog log = LogManager.GetLogger(typeof(SteamAPI));
         private const string BASE_URI = "http://api.steampowered.com";
         private const string API_VERSION = "v0001";
 

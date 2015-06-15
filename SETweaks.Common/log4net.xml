@@ -1,0 +1,26 @@
+﻿<log4net>
+  <root>
+    <appender type="log4net.Appender.ColoredConsoleAppender">
+      <mapping>
+        <level value="ERROR" />
+        <foreColor value="White" />
+        <backColor value="Red, HighIntensity" />
+      </mapping>
+      <mapping>
+        <level value="DEBUG" />
+        <foreColor value="Green" />
+      </mapping>
+      <mapping>
+        <level value="WARN" />
+        <foreColor value="Yellow" />
+      </mapping>
+      <mapping>
+        <level value="INFO" />
+        <foreColor value="White" />
+      </mapping>
+      <layout type="SETweak.Logging.IndentationPatternLayout">
+        <conversionPattern value="%-4timestamp [%thread] %-5level %indentation%message%newline%exception" />
+      </layout>
+    </appender>
+  </root>
+</log4net>
