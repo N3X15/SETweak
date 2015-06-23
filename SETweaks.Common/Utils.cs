@@ -55,5 +55,18 @@ namespace SETweak
                 SearchOption.AllDirectories))
                 File.Copy(newPath, newPath.Replace(SourcePath, DestinationPath), true);
         }
+
+        public static string StripBadFilenameChars(string fn)
+        {
+            var newfn = "";
+            var badfnchars = Path.GetInvalidFileNameChars();
+            foreach (char c in fn)
+            {
+                if(badfnchars.Contains(c))
+                    continue;
+                newfn += c;
+            }
+            return fn;
+        }
     }
 }

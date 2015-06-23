@@ -42,7 +42,13 @@ namespace SETweak.Mods
     public class WorkshopMod : IMod, IDisposable
     {
         static readonly ILog log = LogManager.GetLogger(typeof(WorkshopMod));
+        public const string WORKSHOP_URL_PREFIX = "http://steamcommunity.com/sharedfiles/filedetails/?id=";
+        
         private PublishedFileDetails _metaData;
+
+        /// <summary>
+        /// Information returned by Steam regarding this addon.
+        /// </summary>
         public PublishedFileDetails MetaData
         {
             get
@@ -131,14 +137,20 @@ namespace SETweak.Mods
             {
                 FetchMetadata();
             }
+            zip.Dispose();
             if (File.Exists(filename))
             {
-                if ((new FileInfo(filename)).Length == MetaData.FileSize || clobber)
+                if ((new FileInfo(filename)).Length == MetaData.FileSize)
                 {
-                    log.Info("File exists, and is the correct size.  Skipping download.");
-                    return;
-                }
-                log.Warn("File exists, but is the wrong size.  Deleting...");
+                    if (!clobber)
+                    {
+                        log.Info("File exists, and is the correct size.  Skipping download.");
+                        zip = new ZipFile(filename);
+                        return;
+                    } else
+                        log.Warn("File exists, but --clobber is set.  Deleting...");
+                } else
+                    log.Warn("File exists, but is the wrong size.  Deleting...");
                 File.Delete(filename);
             }
             using (log.BeginInfo("Downloading WS Mod #{0} (\"{2}\") to {1}...", ID, filename, MetaData.Title))
@@ -147,7 +159,6 @@ namespace SETweak.Mods
                     wc.DownloadFile(MetaData.FileURL, filename + ".tmp");
                 File.Move(filename + ".tmp", filename);
             }
-            zip.Dispose();
             zip = new ZipFile(filename);
         }
 

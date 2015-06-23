@@ -37,4 +37,28 @@ namespace SETweak.Mods
         void RemoveFile(string name);
         Stream WriteFile(string name);
     }
+
+    public static class Mod
+    {
+        public static IMod LocateMod(string path, bool clobber)
+        {
+            ulong modID;
+            if (path.StartsWith(WorkshopMod.WORKSHOP_URL_PREFIX))
+            {
+                path = path.Remove(WorkshopMod.WORKSHOP_URL_PREFIX.Length);
+            }
+            if (ulong.TryParse(path, out modID))
+            {
+                using (var wsmod = new WorkshopMod(modID))
+                {
+                    wsmod.Download(clobber);
+                    return wsmod;
+                }
+            }
+            else
+            {
+                return new DirectoryMod(path);
+            }
+        }
+    }
 }

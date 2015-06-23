@@ -19,6 +19,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnvFiddle.GUI", "EnvFiddle.
 		{4EA06509-8F33-4BC8-80C2-5A1D95049E99} = {4EA06509-8F33-4BC8-80C2-5A1D95049E99}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SaveEdit", "SaveEdit\SaveEdit.csproj", "{8041320D-504D-4AE9-AEE2-A488693CC3FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModTool", "ModTool\ModTool.csproj", "{554546CF-C630-41E3-A7D5-C227C8F2DAB4}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = SETweaks.vsmdi
@@ -72,6 +76,26 @@ Global
 		{A9643EFD-2A7D-4690-BC5F-7E6DBDC0D3D2}.Release|Mixed Platforms.Build.0 = Release|x86
 		{A9643EFD-2A7D-4690-BC5F-7E6DBDC0D3D2}.Release|x86.ActiveCfg = Release|x86
 		{A9643EFD-2A7D-4690-BC5F-7E6DBDC0D3D2}.Release|x86.Build.0 = Release|x86
+		{8041320D-504D-4AE9-AEE2-A488693CC3FF}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{8041320D-504D-4AE9-AEE2-A488693CC3FF}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{8041320D-504D-4AE9-AEE2-A488693CC3FF}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{8041320D-504D-4AE9-AEE2-A488693CC3FF}.Debug|x86.ActiveCfg = Debug|x86
+		{8041320D-504D-4AE9-AEE2-A488693CC3FF}.Debug|x86.Build.0 = Debug|x86
+		{8041320D-504D-4AE9-AEE2-A488693CC3FF}.Release|Any CPU.ActiveCfg = Release|x86
+		{8041320D-504D-4AE9-AEE2-A488693CC3FF}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{8041320D-504D-4AE9-AEE2-A488693CC3FF}.Release|Mixed Platforms.Build.0 = Release|x86
+		{8041320D-504D-4AE9-AEE2-A488693CC3FF}.Release|x86.ActiveCfg = Release|x86
+		{8041320D-504D-4AE9-AEE2-A488693CC3FF}.Release|x86.Build.0 = Release|x86
+		{554546CF-C630-41E3-A7D5-C227C8F2DAB4}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{554546CF-C630-41E3-A7D5-C227C8F2DAB4}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{554546CF-C630-41E3-A7D5-C227C8F2DAB4}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{554546CF-C630-41E3-A7D5-C227C8F2DAB4}.Debug|x86.ActiveCfg = Debug|x86
+		{554546CF-C630-41E3-A7D5-C227C8F2DAB4}.Debug|x86.Build.0 = Debug|x86
+		{554546CF-C630-41E3-A7D5-C227C8F2DAB4}.Release|Any CPU.ActiveCfg = Release|x86
+		{554546CF-C630-41E3-A7D5-C227C8F2DAB4}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{554546CF-C630-41E3-A7D5-C227C8F2DAB4}.Release|Mixed Platforms.Build.0 = Release|x86
+		{554546CF-C630-41E3-A7D5-C227C8F2DAB4}.Release|x86.ActiveCfg = Release|x86
+		{554546CF-C630-41E3-A7D5-C227C8F2DAB4}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

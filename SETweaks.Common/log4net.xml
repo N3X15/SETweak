@@ -3,20 +3,19 @@
     <appender type="log4net.Appender.ColoredConsoleAppender">
       <mapping>
         <level value="ERROR" />
-        <foreColor value="White" />
-        <backColor value="Red, HighIntensity" />
+        <foreColor value="Red, HighIntensity" />
       </mapping>
       <mapping>
         <level value="DEBUG" />
-        <foreColor value="Green" />
+        <foreColor value="White" />
       </mapping>
       <mapping>
         <level value="WARN" />
-        <foreColor value="Yellow" />
+        <foreColor value="Yellow, HighIntensity" />
       </mapping>
       <mapping>
         <level value="INFO" />
-        <foreColor value="White" />
+        <foreColor value="White, HighIntensity" />
       </mapping>
       <layout type="SETweak.Logging.IndentationPatternLayout">
         <conversionPattern value="%-4timestamp [%thread] %-5level %indentation%message%newline%exception" />

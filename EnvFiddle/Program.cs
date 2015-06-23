@@ -40,31 +40,9 @@ namespace EnvFiddle
 {
     class Program
     {
-        const string wsPrefix = "http://steamcommunity.com/sharedfiles/filedetails/?id=";
 
         static List<BaseFixer> Fixers = new List<BaseFixer>();
         static ILog log = LogManager.GetLogger(typeof(Program));
-
-        static IMod LocateMod(string path, bool clobber)
-        {
-            ulong modID;
-            if (path.StartsWith(wsPrefix))
-            {
-                path = path.Remove(wsPrefix.Length);
-            }
-            if (ulong.TryParse(path, out modID))
-            {
-                using (var wsmod = new WorkshopMod(modID))
-                {
-                    wsmod.Download(clobber);
-                    return wsmod.Extract();
-                }
-            }
-            else
-            {
-                return new DirectoryMod(path);
-            }
-        }
 
         static void CopyIfNotNull(Environment a, Environment b, Environment defaults, FieldInfo field)
         {
@@ -105,7 +83,7 @@ namespace EnvFiddle
                 Environment p_env;
                 using (var stream = File.OpenRead(presetName))
                 {
-                    p_env = LoadEnv(presetName, stream);
+                    p_env = Environment.Load(presetName, stream);
                 }
                 EnvMerge(env, p_env);
             }
@@ -124,9 +102,9 @@ namespace EnvFiddle
                 }
             }
 
-            IMod mod = LocateMod(opt.Path, opt.Clobber);
+            IMod mod = Mod.LocateMod(opt.Path, opt.Clobber);
 
-            SETweak.Mods.DataBindings.Environment env = LoadEnv(string.Format("{0}:/Data/Environment.sbc", mod.ToString()), mod.ReadFile("Data/Environment.sbc"));
+            SETweak.Mods.DataBindings.Environment env = Environment.Load(mod);
             if (env == null)
             {
                 throw new NullReferenceException("Env is null.  Did something go wrong during load?");
@@ -178,7 +156,7 @@ namespace EnvFiddle
                 DirectoryMod newmod = new DirectoryMod(opt.OutDir);
                 using (var wstrm = newmod.WriteFile("Data/Environment.sbc"))
                 {
-                    SaveEnv(wstrm, env);
+                    Environment.Save(wstrm, env);
                 }
             }
 
@@ -186,34 +164,6 @@ namespace EnvFiddle
             {
                 Console.WriteLine("Press any key to continue...");
                 Console.ReadKey();
-            }
-        }
-
-        private static void SaveEnv(Stream stream, Environment env)
-        {
-            XmlWriterSettings settings = new XmlWriterSettings();
-            settings.Indent = true;
-            settings.IndentChars = "  ";
-            using (var xmlw = XmlWriter.Create(stream, settings))
-            {
-                var envdefs = new SETweak.Mods.DataBindings.Environment.EnvironmentDefinitions();
-                envdefs.Environment = env;
-                getEnvSerializer().Serialize(xmlw, envdefs);
-            }
-        }
-
-        private static XmlSerializer getEnvSerializer()
-        {
-            return new XmlSerializer(typeof(SETweak.Mods.DataBindings.Environment.EnvironmentDefinitions));
-        }
-
-        private static Environment LoadEnv(string name, Stream stream)
-        {
-            log.InfoFormat("Loading {0}...", name);
-            using (var envstream = stream)
-            {
-                var envdefs = (SETweak.Mods.DataBindings.Environment.EnvironmentDefinitions)getEnvSerializer().Deserialize(envstream);
-                return envdefs.Environment;
             }
         }
     }
